@@ -1,0 +1,4 @@
+"0","pf$year_joined <- 2014 + tenure/365
+"
+"2","Error: object 'tenure' not found
+"

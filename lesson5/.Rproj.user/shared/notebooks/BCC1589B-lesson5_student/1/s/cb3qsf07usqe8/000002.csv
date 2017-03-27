@@ -1,0 +1,16 @@
+"0","library(tidyr)
+"
+"2","
+Attaching package: ‘tidyr’
+
+"
+"2","The following object is masked from ‘package:reshape2’:
+
+    smiths
+
+"
+"2","The following object is masked from ‘package:RCurl’:
+
+    complete
+
+"

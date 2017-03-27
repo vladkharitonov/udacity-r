@@ -1,0 +1,327 @@
+Lesson 5
+========================================================
+
+### Multivariate Data
+Notes:
+
+***
+
+### Moira Perceived Audience Size Colored by Age
+Notes:
+
+***
+
+### Third Qualitative Variable
+Notes:
+
+```{r Third Qualitative Variable}
+ggplot(aes(x = gender, y = age),
+       data = subset(pf, !is.na(gender))) + geom_histogram()
+```
+
+***
+
+### Plotting Conditional Summaries
+Notes:
+
+```{r Plotting Conditional Summaries}
+getwd()
+setwd("/Users/Kharitonov/Desktop/udacity_r/lesson4")
+pf <- read_tsv("/Users/Kharitonov/Desktop/udacity_r/lesson4/pseudo_facebook.tsv")
+pf.fc_by_age_gender <- pf %>%
+  filter(!is.na(gender)) %>% 
+  group_by(age, gender) %>% 
+  summarise(mean_friend_count = mean(friend_count),
+            median_friend_count = median(friend_count),
+            n = n()) %>% 
+  ungroup() %>% 
+  arrange(age)
+
+ggplot(pf.fc_by_age_gender, aes(x = age, y = median_friend_count, color = gender)) + 
+  geom_line()
+```
+
+***
+
+### Thinking in Ratios
+Notes:
+
+***
+
+### Wide and Long Format
+Notes:
+
+***
+
+### Reshaping Data
+Notes:
+
+```{r}
+install.packages('reshape2')
+library(reshape2)
+library(tidyr)
+
+spread(subset(pf.fc_by_age_gender, select = c('gender', 'age', 'median_friend_count')), gender, median_friend_count)
+
+pf.fc_by_age_gender.wide <- dcast(pf.fc_by_age_gender,
+                                  age ~ gender, value.var = "median_friend_count")
+
+```
+
+
+***
+
+### Ratio Plot
+Notes:
+
+```{r Ratio Plot}
+
+ggplot(pf.fc_by_age_gender.wide, aes(y = female/male, x = age)) + geom_line() +
+  geom_hline(yintercept = 1, linetype = "dashed", color = "red")
+
+```
+
+***
+
+### Third Quantitative Variable
+Notes:
+
+```{r Third Quantitative Variable}
+
+pf$year_joined <- 2014 - ceiling(pf$tenure/365)
+
+```
+
+***
+
+### Cut a Variable
+Notes:
+
+```{r Cut a Variable}
+
+pf$year_joined.bucket <- cut(pf$year_joined, breaks = c(2004, 2009, 2011, 2012, 2014))
+
+```
+
+***
+
+### Plotting it All Together
+Notes:
+
+```{r Plotting it All Together}
+ggplot(subset(pf, !is.na(year_joined.bucket)), aes(x = age, y = friend_count)) + 
+  geom_line(aes(color = year_joined.bucket),fun.y = mean, stat = "summary")
+
+```
+
+***
+
+### Plot the Grand Mean
+Notes:
+
+```{r Plot the Grand Mean}
+ggplot(subset(pf, !is.na(year_joined.bucket)), aes(x = age, y = friend_count)) + 
+  geom_line(aes(color = year_joined.bucket),fun.y = mean, stat = "summary") +
+  geom_line(fun.y = mean, linetype = "dashed", stat = "summary")
+```
+
+***
+
+### Friending Rate
+Notes:
+
+```{r Friending Rate}
+library(dplyr)
+
+pf_friends <- pf %>% filter(tenure > 0) %>%  mutate(friending_rate = friend_count/tenure)
+
+max(pf_friends$friending_rate)
+
+```
+
+***
+
+### Friendships Initiated
+Notes:
+
+What is the median friend rate?
+
+What is the maximum friend rate?
+
+```{r Friendships Initiated}
+
+pf_friends <- pf_friends %>% mutate(friendshipping_rate = friendships_initiated/tenure)
+
+ggplot(pf_friends, aes(x = tenure, y = friendshipping_rate)) +
+  geom_smooth(aes(color = year_joined.bucket), fun.y = mean)
+
+```
+
+***
+
+### Bias-Variance Tradeoff Revisited
+Notes:
+
+```{r Bias-Variance Tradeoff Revisited}
+
+ggplot(aes(x = tenure, y = friendships_initiated / tenure),
+       data = subset(pf, tenure >= 1)) +
+  geom_line(aes(color = year_joined.bucket),
+            stat = 'summary',
+            fun.y = mean)
+
+ggplot(aes(x = 7 * round(tenure / 7), y = friendships_initiated / tenure),
+       data = subset(pf, tenure > 0)) +
+  geom_line(aes(color = year_joined.bucket),
+            stat = "summary",
+            fun.y = mean)
+
+ggplot(aes(x = 30 * round(tenure / 30), y = friendships_initiated / tenure),
+       data = subset(pf, tenure > 0)) +
+  geom_line(aes(color = year_joined.bucket),
+            stat = "summary",
+            fun.y = mean)
+
+ggplot(aes(x = 90 * round(tenure / 90), y = friendships_initiated / tenure),
+       data = subset(pf, tenure > 0)) +
+  geom_line(aes(color = year_joined.bucket),
+            stat = "summary",
+            fun.y = mean)
+
+```
+
+***
+
+### Sean's NFL Fan Sentiment Study
+Notes:
+
+***
+
+### Introducing the Yogurt Data Set
+Notes:
+
+***
+
+### Histograms Revisited
+Notes:
+
+```{r Histograms Revisited}
+
+yo <- read.csv("yogurt.csv")
+yo$id <- factor(yo$id)
+
+ggplot(yo, aes(x = price)) + geom_histogram(binwidth = 10)
+
+```
+
+***
+
+### Number of Purchases
+Notes:
+
+```{r Number of Purchases}
+
+yo <- yo %>% mutate(all.purchases = strawberry + blueberry + pina.colada + plain + mixed.berry)
+
+```
+
+***
+
+### Prices over Time
+Notes:
+
+```{r Prices over Time}
+
+ggplot(yo, aes(x = time, y = price)) + geom_point(alpha = 0.05)
+
+```
+
+***
+
+### Sampling Observations
+Notes:
+
+***
+
+### Looking at Samples of Households
+
+```{r Looking at Sample of Households}
+
+set.seed(1313)
+sample_id <- sample(levels(yo$id),18, replace = FALSE)
+
+ggplot(subset(yo, id %in% sample_id), aes(x = time, y = price)) +
+  facet_wrap(~id) +
+  geom_line() +
+  geom_point(size = yo$all.purchases)
+
+
+```
+
+***
+
+### The Limits of Cross Sectional Data
+Notes:
+
+***
+
+### Many Variables
+Notes:
+
+***
+
+### Scatterplot Matrix
+Notes:
+
+```{r Scatterplot Matrix}
+
+install.packages("GGally")
+library(GGally)
+
+set.seed(1836)
+ggpairs(pf_subset[sample.int(nrow(pf), 1000), -1] )
+pf_subset <- pf[sample.int(nrow(pf), 1000),]
+
+cor.test(pf_subset$friendships_initiated, pf_subset$friend_count)
+cor.test(pf_subset$age, pf_subset$mobile_likes)
+
+
+```
+
+***
+
+### Even More Variables
+Notes:
+
+***
+
+### Heat Maps
+Notes:
+
+```{r}
+nci <- read.table("nci.tsv")
+colnames(nci) <- c(1:64)
+```
+
+```{r}
+nci.long.samp <- melt(as.matrix(nci[1:200,]))
+names(nci.long.samp) <- c("gene", "case", "value")
+head(nci.long.samp)
+
+ggplot(aes(y = gene, x = case, fill = value),
+  data = nci.long.samp) +
+  geom_tile() +
+  scale_fill_gradientn(colours = colorRampPalette(c("blue", "red"))(100))
+```
+
+
+***
+
+### Analyzing Three of More Variables
+Reflection:
+
+***
+
+Click **KnitHTML** to see all of your hard work and to have an html
+page of this lesson, your answers, and your notes!
+

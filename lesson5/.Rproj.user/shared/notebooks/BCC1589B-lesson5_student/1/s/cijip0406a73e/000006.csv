@@ -1,0 +1,4 @@
+"0","ggplot(pf_friends, aes(x = tenure, y = friendshipping_rate)) +
+  geom_smooth(aes(color = year_joined.bucket), fun.y = mean)
+"
+"2","Ignoring unknown parameters: fun.y"

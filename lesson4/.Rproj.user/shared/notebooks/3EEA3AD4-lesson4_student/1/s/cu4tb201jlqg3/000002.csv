@@ -1,0 +1,7 @@
+"0","pf.fc_by_age_months <- summarize(groups, 
+                                 friend_count_mean = mean(),
+                                 friend_count_median = median(),
+                                 n = n())
+"
+"2","Error: argument ""x"" is missing, with no default
+"

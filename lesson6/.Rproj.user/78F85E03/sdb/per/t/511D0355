@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1487954441187.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "511D0355",
+    "lastKnownWriteTime" : 6,
+    "last_content_update" : 1487954441187,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "78B9AB24",
+        "caption" : "diamondsbig",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=diamondsbig&cache_key=78B9AB24",
+        "displayedObservations" : 598024,
+        "environment" : "",
+        "object" : "diamondsbig",
+        "preview" : 0,
+        "totalObservations" : 598024,
+        "variables" : 12
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

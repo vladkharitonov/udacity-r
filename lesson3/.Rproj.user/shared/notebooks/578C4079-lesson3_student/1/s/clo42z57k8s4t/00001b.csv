@@ -1,0 +1,4 @@
+"0","ggplot(diam, aes(x = price), binwidth(10)) + geom_histogram() + xlim(0,2000) + binwidth(1)
+"
+"2","Error: could not find function ""binwidth""
+"

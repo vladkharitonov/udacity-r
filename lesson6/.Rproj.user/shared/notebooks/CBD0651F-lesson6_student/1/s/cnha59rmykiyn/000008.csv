@@ -1,0 +1,5 @@
+"0","load(rawConnection(diamondsurl))
+"
+"2","Error in load(rawConnection(diamondsurl)) : 
+  the input does not start with a magic number compatible with loading from a connection
+"

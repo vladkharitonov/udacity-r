@@ -1,0 +1,7 @@
+"0","ggplot(subset(yo, id %in% sample_id), aes(x = time, y = price)) +
+  facet_wrap(~id) +
+  geom_line() +
+  geom_point(size = yo$all.purchases)
+"
+"2","Error: Aesthetics must be either length 1 or the same as the data (140): size
+"
